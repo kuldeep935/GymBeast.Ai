@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Missed Reason Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2A2A72;
+            --secondary-color: #009FFD;
+            --accent-color: #FFA400;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            position: relative;
+        }
+
+        h2:after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: var(--light-bg);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 8px rgba(0, 159, 253, 0.2);
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px auto;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #response {
+            margin-top: 30px;
+            padding: 25px;
+            background: var(--light-bg);
+            border-radius: 10px;
+            display: none;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-color);
+        }
+
+        .loading i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .suggestion-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .suggestion-card h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-dumbbell"></i> why you missed the gym</h2>
+        <form id="reasonForm">
+            <div class="form-group">
+                <label for="reason"><i class="fas fa-exclamation-circle"></i> Main Reason for Missing Gym</label>
+                <select id="reason" name="reason" required>
+                    <option value="">Select a reason</option>
+                    <option value="medical">Medical Issue</option>
+                    <option value="time">Lack of Time</option>
+                    <option value="motivation">Lack of Motivation</option>
+                    <option value="work">Work Commitments</option>
+                    <option value="family">Family Responsibilities</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="details"><i class="fas fa-comment-dots"></i> Situation Details</label>
+                <textarea id="details" name="details" rows="4" placeholder="Describe what happened..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="frequency"><i class="fas fa-calendar-times"></i> Frequency of Occurrence</label>
+                <select id="frequency" name="frequency" required>
+                    <option value="">Select frequency</option>
+                    <option value="first">First Time</option>
+                    <option value="occasional">Occasionally</option>
+                    <option value="frequent">Frequently</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="goal"><i class="fas fa-bullseye"></i> Primary Fitness Goal</label>
+                <input type="text" id="goal" name="goal" placeholder="e.g., Weight loss, Muscle gain, General fitness" required>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-magic"></i> Get AI suggestions
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i><br>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            Analyzing your situation...
+        </div>
+
+        <div id="response"></div>
+    </div>
+
+    <script>
+        document.getElementById('reasonForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                reason: document.getElementById('reason').value,
+                details: document.getElementById('details').value,
+                frequency: document.getElementById('frequency').value,
+                goal: document.getElementById('goal').value
+            };
+
+            // UI Updates
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('response').style.display = 'none';
+            document.querySelector('.progress-fill').style.width = '70%';
+
+            try {
+                const response = await fetch('process.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                document.querySelector('.progress-fill').style.width = '100%';
+                
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                    const responseDiv = document.getElementById('response');
+                    responseDiv.style.display = 'block';
+                    responseDiv.innerHTML = `
+                        <div class="suggestion-card">
+                            <h3><i class="fas fa-lightbulb"></i> AI-Powered Recommendations</h3>
+                            ${formatResponse(data.suggestion)}
+                        </div>
+                        <div class="suggestion-card">
+                            <h3><i class="fas fa-chart-line"></i> Progress Strategy</h3>
+                            ${createProgressSteps()}
+                        </div>
+                    `;
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('response').style.display = 'block';
+                document.getElementById('response').innerHTML = `
+                    <div class="suggestion-card" style="background: #ffe6e6; border-color: #ff4444;">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                        <p>Please try again later. If the problem persists, contact support.</p>
+                    </div>
+                `;
+            }
+        });
+
+        function formatResponse(text) {
+            // Convert markdown-like formatting to HTML
+            return text.split('\n').map(line => {
+                if (line.startsWith('- ')) return `<li>${line.substring(2)}</li>`;
+                if (line.startsWith('**')) return `<h4>${line.replace(/\*\*/g, '')}</h4>`;
+                return `<p>${line}</p>`;
+            }).join('').replace(/<h4>/g, '</div><div class="suggestion-card"><h4>');
+        }
+
+        function createProgressSteps() {
+            return `
+                <ol class="progress-steps">
+                    <li>Review your current schedule</li>
+                    <li>Implement time management strategies</li>
+                    <li>Start with modified workouts</li>
+                    <li>Track your progress weekly</li>
+                    <li>Adjust plan as needed</li>
+                </ol>
+            `;
+        }
+    </script>
+</body>
+</html>

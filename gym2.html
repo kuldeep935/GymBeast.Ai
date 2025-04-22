@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Calendar - Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: url('img2.jpg'); /* Add your gym-related background image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: rgb(0, 0, 0);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #ff5733;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .mark-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            font-size: 1rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .mark-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .mark-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            th, td {
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            .mark-btn {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Weekly Gym Workout Calendar</h1>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Workout Plan</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td>Chest & Triceps</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>Back & Biceps</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>Legs & Abs</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>Shoulders & Cardio</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>Arms & Core</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td>Full Body Strength</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td>Rest / Active Recovery</td>
+                <td><button class="mark-btn" onclick="markDone(this)">Mark Done</button></td>
+            </tr>
+        </table>
+    </div>
+    
+    <script>
+        function markDone(button) {
+            button.innerText = "✔ Completed";
+            button.style.background = "#6c757d";
+            button.disabled = true;
+        }
+    </script>
+</body>
+</html>
